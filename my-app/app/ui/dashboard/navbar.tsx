@@ -2,7 +2,7 @@
 import Link from "next/link"
 import React from "react"
 
-export default function SideNav(){
+export default function NavBar(){
     const [isOpen, setOpen] = React.useState(false)
     function handleClick(){
         setOpen(!isOpen)
