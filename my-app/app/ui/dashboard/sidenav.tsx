@@ -1,5 +1,4 @@
 "use client";
-import styles from "@/app/ui/home.module.css"
 import Link from "next/link"
 import React from "react"
 
@@ -11,7 +10,7 @@ export default function SideNav(){
     return(
         <nav className="nav  p-5 h-24 md:h-44 md:w-64  max-w-md  flex items-center justify-between md:rounded-xl ">
             <div className="md:-mb-12 text-left">            
-                <h1 className="font-bold">Frontend Mentor</h1>
+                <h1 className="font-bold">MK FrontEnd Mentor</h1>
                 <p>Feedback Board</p>
             </div>            
             <div className="md:hidden">
