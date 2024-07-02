@@ -44,49 +44,52 @@ export function SignUpForm() {
   }
 
   return (
-    <main className="flex-col justify-center items-center mx-auto max-w-md">
-      <h1 className="text-3xl">Sign Up</h1>
-      <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>             
-              <FormControl>
-                <Input placeholder="Username" {...field} />
-              </FormControl>             
-              <FormMessage />
-            </FormItem>
-          )}
-          />
+    <main className="flex-col mx-auto mt-20">
+      <h1 className="text-3xl text-center">Sign Up</h1>
+      <div className="flex justify-center items-center max-w-lg mx-auto">
+          <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 p-4 rounded-md space-y-4 bg-slate-100">
           <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Email" {...field} />
-              </FormControl>              
-              <FormMessage />
-            </FormItem>
-          )}
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>             
+                <FormControl>
+                  <Input placeholder="Username" {...field} />
+                </FormControl>             
+                <FormMessage />
+              </FormItem>
+            )}
+            />
+            <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input placeholder="Email" {...field} />
+                </FormControl>              
+                <FormMessage />
+              </FormItem>
+            )}
+            />
+            <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input placeholder="Password" {...field} />
+                </FormControl>              
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Password" {...field} />
-              </FormControl>              
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button className="" type="submit">Submit</Button>
-      </form>
-    </Form>
+          <Button className="w-full bg-blue-500 text-white" type="submit">Sign Up</Button>
+          <p className="">Already have an account?<span><a href="">Log in</a></span></p>
+        </form>
+      </Form>
+      </div>
     </main>
   )
 }
