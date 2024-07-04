@@ -3,6 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+
 import { Input } from "@/app/components/ui/input"
 import { toast } from "@/app/components/ui/use-toast"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
@@ -22,7 +24,7 @@ const FormSchema = z.object({
    password: z.string().min(4),
 })
 
-export function SignUpForm() {
+export function LoginForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -43,22 +45,11 @@ export function SignUpForm() {
 
   return (
     <main className="flex-col mx-auto mt-20">
-      <h1 className="text-3xl text-center">Sign Up</h1>
+      <h1 className="text-3xl text-center">Login Form</h1>
       <div className="flex justify-center items-center max-w-lg mx-auto">
           <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 p-4 rounded-md space-y-4 bg-slate-100">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-            <FormItem>             
-                <FormControl>
-                <Input placeholder="Username" {...field} />
-                </FormControl>             
-                <FormMessage />
-            </FormItem>
-            )}
-            />            
+                                
             <FormField
             control={form.control}
             name="email"
@@ -83,8 +74,8 @@ export function SignUpForm() {
               </FormItem>
             )}
           />
-            <Button className="w-full bg-blue-500 text-white" type="submit">Sign Up</Button>
-          <p className="">Already have an account?<span><Link href="/login">Log in</Link></span></p>
+            <Button className="w-full bg-blue-500 text-white" type="submit">Login</Button>
+          <p className="">Do not have an account?<span><Link href="/login/sign-up">Sign Up</Link></span></p>
         </form>
       </Form>
       </div>
