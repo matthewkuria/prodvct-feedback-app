@@ -8,7 +8,8 @@ import { toast } from "@/app/components/ui/use-toast"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
 import { Button } from "../../components/ui/button"
 import { useForm } from "react-hook-form"
-
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { useState } from "react"
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -23,30 +24,42 @@ const FormSchema = z.object({
 })
 
 export function SignUpForm() {
+  const [error, setError] = useState(null);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       username: "",
     },
   })
+const handleSignup = async (event:any) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const username = formData.get('username');
+    const email = formData.get('email');
+    const password = formData.get('password');
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
-  }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Update the user's profile with the username
+      await updateProfile(user, {
+        displayName: username,
+      });
 
+      console.log('User signed up: ', user);
+      // Redirect or show success message
+    } catch (error:any) {
+      setError(error.message);
+      console.error('Error: ', error.code, error.message);
+    }
+  };
   return (
     <main className="flex-col mx-auto mt-20">
       <h1 className="text-3xl text-center">Sign Up</h1>
       <div className="flex justify-center items-center max-w-lg mx-auto">
           <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 p-4 rounded-md space-y-4 bg-slate-100">
+        <form onSubmit={handleSignup} className="w-2/3 p-4 rounded-md space-y-4 bg-slate-100">
           <FormField
             control={form.control}
             name="username"
