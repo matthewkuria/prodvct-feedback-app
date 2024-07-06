@@ -17,7 +17,7 @@ export default function Home() {
         </Link>
         </div>
       </div>
-      <div className="flex-col">
+      <div className="flex-col pl-32">
         <Image
           src="/yourFeedback-desktop.png"
           width={500}
