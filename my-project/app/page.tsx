@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="flex-col columns-1 md:columns-2 justify-center items-center  p-5 md:p-24  gap-4 ">
      <div className="flex-col w-full md:pt-20 ">
-        <h1 className="text-xl md:text-4xl font-bold text-purple-800 p-5">Product Feedback App</h1>
+        <h1 className="text-xl md:text-4xl font-bold text-purple-800 md:py-5 md:mb-7">Product Feedback App</h1>
         <p className="text-slate-500">
           Welcome to FeedbackHub, your go-to platform for capturing customer insights effortlessly. Our intuitive app empowers businesses to gather, analyze, and act on real-time feedback, ensuring you stay ahead of customer needs and trends. Whether you’re a small startup or an established enterprise, FeedbackHub provides the tools to enhance customer satisfaction, drive innovation, and foster loyalty. Join us today and transform your feedback into growth.
         </p>
