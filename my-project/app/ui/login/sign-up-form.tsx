@@ -8,50 +8,57 @@ import { toast } from "@/app/components/ui/use-toast"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
 import { Button } from "../../components/ui/button"
 import { useForm } from "react-hook-form"
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth"
 
 const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-   email: z
-    .string()
-    .min(1, { message: "This field has to be filled." })
-    .email("This is not a valid email.")
-    .refine((e) => e === "abcd@fg.com", "This email is not in our database"),
+  emailAddress: z.string().email(),
    password: z.string().min(4),
 })
 
 export function SignUpForm() {
-  const [error, setError] = useState(null);
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      username: "",
-    },
-  })
-const handleSignup = async (event:any) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const username = formData.get('username');
-    const email = formData.get('email');
-    const password = formData.get('password');
-
+  const auth = getAuth();
+  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [error, setError] = useState("")
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+          emailAddress: "",
+            password: "",
+            username: ""
+        },
+      })
+const handleSubmit = async(values: z.infer<typeof FormSchema>) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      
-      // Update the user's profile with the username
-      await updateProfile(user, {
-        displayName: username,
-      });
-
-      console.log('User signed up: ', user);
-      // Redirect or show success message
-    } catch (error:any) {
-      setError(error.message);
-      console.error('Error: ', error.code, error.message);
+       await updateProfile(userCredential.user, { displayName });
+      console.log("Sign Up successful")
+      router.push("/login"); // Redirect to login
+    } catch (error: any) {
+      setError(getErrorMessage(error.code))
+      console.error("Error signing in:",error.code);
+    }    
+    console.log(values) 
+    
+  }
+   // Function to map Firebase error codes to user-friendly messages
+  const getErrorMessage = (code: any) => {
+    switch (code) {
+      case 'auth/email-already-in-use':
+        return 'Email is already in use.';
+      case 'auth/invalid-email':
+        return 'Invalid email address.';
+      case 'auth/weak-password':
+        return 'Password is too weak.';
+      default:
+        return 'An error occurred. Please try again.';
     }
   };
   return (
@@ -59,14 +66,21 @@ const handleSignup = async (event:any) => {
       <h1 className="text-3xl text-center">Sign Up</h1>
       <div className="flex justify-center items-center max-w-lg mx-auto">
           <Form {...form}>
-        <form onSubmit={handleSignup} className="w-2/3 p-4 rounded-md space-y-4 bg-slate-100">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="w-2/3 p-4 rounded-md space-y-4 bg-slate-100">
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
             <FormItem>             
                 <FormControl>
-                <Input placeholder="Username" {...field} />
+                  <Input placeholder="Username"
+                    value={field.value}
+                    onChange={(e) => {
+                        // call field.onchange handler
+                        field.onChange(e);
+                        setDisplayName(e.target.value)
+                      }}
+                 />
                 </FormControl>             
                 <FormMessage />
             </FormItem>
@@ -74,7 +88,7 @@ const handleSignup = async (event:any) => {
             />            
             <FormField
             control={form.control}
-            name="email"
+            name="emailAddress"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
