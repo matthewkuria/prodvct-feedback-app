@@ -96,8 +96,8 @@ const handleSignup = async (event:any) => {
               </FormItem>
             )}
           />
-            <Button className="w-full bg-blue-500 text-white" type="submit">Sign Up</Button>
-          <p className="">Already have an account?<span><Link href="/login">Log in</Link></span></p>
+            <Button className="w-full bg-blue-500 text-white hover:bg-blue-400" type="submit">Sign Up</Button>
+          <p className="">Already have an account?<span className="hover:underline text-blue-500"><Link href="/login">Log in</Link></span></p>
         </form>
       </Form>
       </div>
