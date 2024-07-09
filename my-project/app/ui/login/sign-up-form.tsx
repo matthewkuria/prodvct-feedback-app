@@ -4,20 +4,22 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import Link from "next/link"
 import { Input } from "@/app/components/ui/input"
-import { toast } from "@/app/components/ui/use-toast"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
 import { Button } from "../../components/ui/button"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth"
+import {
+  createUserWithEmailAndPassword,
+  getAuth, updateProfile
+} from "firebase/auth";
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
+  displayName: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
   emailAddress: z.string().email(),
-   password: z.string().min(4),
+  password: z.string().min(4),
 })
 
 export function SignUpForm() {
@@ -32,7 +34,7 @@ export function SignUpForm() {
         defaultValues: {
           emailAddress: "",
             password: "",
-            username: ""
+            displayName: ""
         },
       })
 const handleSubmit = async(values: z.infer<typeof FormSchema>) => {
@@ -64,12 +66,13 @@ const handleSubmit = async(values: z.infer<typeof FormSchema>) => {
   return (
     <main className="flex-col mx-auto mt-20">
       <h1 className="text-3xl text-center">Sign Up</h1>
+       {error && <div className="text-red-500 text-center">{error }</div >}
       <div className="flex justify-center items-center max-w-lg mx-auto">
           <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="w-2/3 p-4 rounded-md space-y-4 bg-slate-100">
           <FormField
             control={form.control}
-            name="username"
+            name="displayName"
             render={({ field }) => (
             <FormItem>             
                 <FormControl>
@@ -92,7 +95,13 @@ const handleSubmit = async(values: z.infer<typeof FormSchema>) => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Email"
+                    value={field.value}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setEmail(e.target.value)
+                    }}
+                  />
                 </FormControl>              
                 <FormMessage />
               </FormItem>
@@ -104,7 +113,14 @@ const handleSubmit = async(values: z.infer<typeof FormSchema>) => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Password" {...field} />
+                  <Input placeholder="Password"
+                    type="password"
+                    value={field.value}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setPassword(e.target.value)
+                    }}
+                  />
                 </FormControl>              
                 <FormMessage />
               </FormItem>
