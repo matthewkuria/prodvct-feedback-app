@@ -4,7 +4,7 @@ import NavBar from "../ui/navbar/navbar"
 
 const Page = () => {
     return (
-        <NavBar />
+       <h1>Hello</h1>
     )
 }
 export default Page
