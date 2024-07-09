@@ -15,17 +15,9 @@ import { auth } from "@/app/firebaseConfig"
 import { GridLoader } from "react-spinners"
 
 
-const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  emailAddress: z.string().email(),
-  //  email: z
-  //   .string()
-  //   .min(1, { message: "This field has to be filled." })
-  //   .email("This is not a valid email.")
-  //   .refine((e) => e === "abcd@fg.com", "This email is not in our database"),
-   password: z.string().min(4),
+const FormSchema = z.object({ 
+  emailAddress: z.string().email(), 
+  password: z.string().min(4),
 })
 
 export function LoginForm() {
@@ -49,7 +41,7 @@ export function LoginForm() {
         if (loading) {
           return <GridLoader color="#e21ba6" /> ; // Show spinner while loading
         }
-      console.log("Sign in successful")
+      console.log("Sign in successful")     
       router.push("/dashboard"); // Redirect to home or dashboard page
     } catch (error: any) {
       setError(getErrorMessage(error.code))
@@ -58,7 +50,7 @@ export function LoginForm() {
     finally {
       setLoading(false);
     }
-    // console.log(values) 
+    console.log(values) 
     
   }
    // Function to map Firebase error codes to user-friendly messages
@@ -74,8 +66,9 @@ export function LoginForm() {
   return (
     <main className="flex-col mx-auto mt-20">
       <h1 className="text-3xl text-center">Login Form</h1>
+      {error && <div className="text-red-500 text-center">{error }</div >}
       <div className="flex justify-center items-center max-w-lg mx-auto">
-          <Form {...form}>
+        <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="w-2/3 p-4 rounded-md space-y-4 bg-slate-100">
                                 
             <FormField
