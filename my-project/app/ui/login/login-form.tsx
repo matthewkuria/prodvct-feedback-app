@@ -50,7 +50,7 @@ export function LoginForm() {
     finally {
       setLoading(false);
     }
-    console.log(values) 
+    // console.log(values) 
     
   }
    // Function to map Firebase error codes to user-friendly messages
@@ -98,6 +98,7 @@ export function LoginForm() {
                 <FormControl>
                   <Input placeholder="Password"
                     value={field.value}
+                    type="password"
                     onChange={(e) => {
                       // call field.onchange handler
                       field.onChange(e);
