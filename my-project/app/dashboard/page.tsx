@@ -1,7 +1,10 @@
 "use client"
+
+import NavBar from "../ui/navbar/navbar"
+
 const Page = () => {
     return (
-        <h1>This is the dashboard</h1>
+        <NavBar />
     )
 }
 export default Page
